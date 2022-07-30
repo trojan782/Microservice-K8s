@@ -1,4 +1,4 @@
-<include a CircleCI status badge, here>
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/trojan782/Microservice-K8s.git/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/trojan782/Microservice-K8s.git/tree/main)
 
 ## Project Overview
 
