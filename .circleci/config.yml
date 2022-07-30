@@ -10,12 +10,32 @@ jobs:
         steps:
             - checkout
 
-            - run:
-                name: Say bye
-                command: echo okay bye
-                
+            - restore_cache:
+                  keys:
+                      # Find a cache corresponding to this specific requirements.txt checksum
+                      # when this file is changed, this key will fail
+                      - v1-pip-deps-{{ checksum "requirements.txt" }}
+                      # Find the most recently generated cache used from any branch
+                      - v1-pip-deps-
 
-        
+            - run:
+                  name: Install python dependencies
+                  command: |
+                      make setup
+                      source ~/.devops/bin/activate
+                      make install
+                      wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 && \
+                      chmod +x /bin/hadolint
+            - save_cache:
+                  key: v1-pip-deps-{{ checksum "requirements.txt" }}
+                  paths:
+                      - ~/.devops
+
+            - run:
+                  name: Run Lint
+                  command: |
+                      source ~/.devops/bin/activate
+                      make lint
 
 workflows:
     main:
