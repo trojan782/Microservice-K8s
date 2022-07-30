@@ -12,8 +12,7 @@ setup:
 
 install:
 	# This should be run from inside a virtualenv
-	pip3 install --upgrade pip &&\
-		pip3 install -r requirements.txt
+	pip3 install --trusted-host pypi.python.org -r requirements.txt
 
 test:
 	# Additional, optional, tests could go here
