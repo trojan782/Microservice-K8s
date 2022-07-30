@@ -2,37 +2,54 @@
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
-version: 2
+version: 2.1
 jobs:
-  build:
-    docker:
-      - image: python:3.9.13-buster
-    working_directory: ~/repo
-    steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "requirements.txt" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-      - run:
-          name: install dependencies
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements.txt
-            # Install hadolint
-            wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 && \
-            chmod +x /bin/hadolint
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
+    build:
+        docker:
+            - image: python:3.9.13-buster
+        steps:
+            - checkout
 
-      # run lint!
-      - run:
-          name: run lint
-          command: |
-            . venv/bin/activate
-            make lint
+            - restore_cache:
+                  keys:
+                      # Find a cache corresponding to this specific requirements.txt checksum
+                      # when this file is changed, this key will fail
+                      - v1-pip-deps-{{ checksum "requirements.txt" }}
+                      # Find the most recently generated cache used from any branch
+                      - v1-pip-deps-
+
+            - run:
+                  name: Install python dependencies
+                  command: |
+                      make setup
+                      source ~/.devops/bin/activate
+                      make install
+            - save_cache:
+                  key: v1-pip-deps-{{ checksum "requirements.txt" }}
+                  paths:
+                      - ~/.devops
+
+            - run:
+                  name: Install hadolint
+                  command: |
+                      sudo make install-hadolint
+            - run:
+                  name: Run Lint
+                  command: |
+                      source ~/.devops/bin/activate
+                      make lint
+            - run:
+                  name: Run Tests
+                  command: |
+                      source ~/.devops/bin/activate
+                      make test-junit
+            - store_test_results:
+                  path: ~/test-results
+
+            - store_artifacts:
+                  path: ~/test-results
+
+workflows:
+    main:
+        jobs:
+            - build
