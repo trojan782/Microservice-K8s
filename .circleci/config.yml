@@ -6,7 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: python3.8-slim-buster
+      - image: circleci/python
     working_directory: ~/repo
     steps:
       - checkout
