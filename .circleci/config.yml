@@ -6,7 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: python:3.7.3-stretch
+      - image: python:3.9.13-buster
     working_directory: ~/repo
     steps:
       - checkout
