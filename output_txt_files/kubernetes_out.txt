@@ -18,3 +18,10 @@ Handling connection for 8000
 0     0  6.575  296.0     15.3  396.9   4.98
 [2022-07-30 01:40:35,480] INFO in app: Prediction output: [20.35373177134412] 
 
+(.devops) ➜  Microservice_project git:(dev) ./make_prediction.sh           
+Port: 8000
+{
+  "prediction": [
+    20.35373177134412
+  ]
+}
