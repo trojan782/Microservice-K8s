@@ -142,3 +142,5 @@ If you want to delete the kubernetes cluster just run this command `minikube del
 ### 8. CircleCI Integration
 -   Create a [CircleCI Account](https://circleci.com/) (use your Github account for a better integration)
 -   Create a config using this [template](https://raw.githubusercontent.com/udacity/DevOps_Microservices/master/Lesson-2-Docker-format-containers/class-demos/.circleci/config.yml)
+
+![Alt](https://repobeats.axiom.co/api/embed/b4d79ee55a7827c1f33184accb4598480291431e.svg "Repobeats analytics image")
